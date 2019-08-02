@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, Image, Keyboard, TouchableOpacity } from 'react-native';
+import { ScrollView, Platform, StyleSheet, View, Text, Image, Keyboard, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 class LoginScreen extends Component {
     constructor(prope) {
@@ -12,15 +12,16 @@ class LoginScreen extends Component {
 
     onLogin = ()=> {
         alert(this.state.userName)
+        this.props.navigation.navigate('Main')
     }
 
     onSignUp = ()=> {
-        alert("Go to Sign up page")
+        this.props.navigation.navigate('Regis')
     }
 
     render(){
         return(
-            <View style={{flex: 1.4}}>
+            <View style={{flex: 1.5}}>
                 <View style={styles.headerBox}>
 
                     {/* HeaderBox */}
@@ -30,13 +31,13 @@ class LoginScreen extends Component {
                     </View>
 
                     {/* UserIcon */}
-                    <View style={{alignItems: "center"}}>
+                    <View style={{alignItems: "center", zIndex: 20}}>
                         <Image style={{
-                            width:60,height:60, 
+                            width:60,
+                            height:60, 
                             borderRadius: (60/2),
                             position: "absolute",
                             marginTop : -30,
-                            zIndex: 100
                             }} source={require('../assets/images/user.jpg')}></Image>                        
                     </View>
 
@@ -73,7 +74,7 @@ class LoginScreen extends Component {
                 </View>
 
                 {/* Advertise */}
-                <View style={{flex:0.6, backgroundColor: "#f3f8f9"}}>
+                <View style={{flex:0.5, backgroundColor: "#f3f8f9"}}>
                     <View style={{flex: 1,marginTop: 20, marginRight: 20, marginLeft: 20, backgroundColor: "#fff"}}>
                         <Text style={{fontSize: 65, color: "#888888", textAlign: "center"}}>โฆษณา</Text>
                     </View>
@@ -96,12 +97,13 @@ const styles = StyleSheet.create({
     headerBox: {
         flex: 1,
         backgroundColor: "#788B91",
-        marginTop: 80,
+        marginTop: Platform.OS === 'ios' ? 50: 56,
         marginBottom: 10,
         marginHorizontal: 20,
         borderRadius: 10,
     },
     InputBox: {
+        zIndex: 19,
         flex:1,
         paddingTop:50,
         paddingLeft:10,

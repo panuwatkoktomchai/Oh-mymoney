@@ -6,9 +6,10 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import SearchMateScreen from '../screens/SearchMate';
 
 const config = Platform.select({
-  // web: { headerMode: 'screen',  },
+  web: { headerMode: 'screen',  },
   default: {},
 });
 
@@ -38,6 +39,7 @@ HomeStack.path = '';
 const LinksStack = createStackNavigator(
   {
     Links: LinksScreen,
+    AddMate: SearchMateScreen,
   },
   config
 );

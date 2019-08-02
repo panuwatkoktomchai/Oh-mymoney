@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Text, View, Image, TextInput, FlatList, Animated, StyleSheet, Platform, TouchableOpacity, Modal} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements'
-
+const mockData = require('../constants/Excample.json')
 const Header_Maximum_Height = 250;
 
 const Header_Minimum_Height = (Platform.OS === 'ios') ? 20 : 24;
@@ -13,7 +13,7 @@ export default class HomeScreen extends Component {
     super(prope)
     this.state = { 
       text:"",
-      listItem: [],
+      listItem: mockData.data,
       fadeAnim: new Animated.Value(0),
       modalVisible: false,
     }
@@ -23,6 +23,21 @@ export default class HomeScreen extends Component {
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
+  }
+
+  onSignOut = ()=>{
+    Alert.alert(
+      "Log out",
+      "คุณแต่ใจหรือไม่ว่าคุณต้องการออกจากระบบ",
+      [
+        { text: "ยกเลิก", onPress: ()=> {this.setModalVisible(false)}},
+        {text: "ออกจากระบบ", onPress: ()=>{
+          this.setModalVisible(false);
+          this.props.navigation.navigate('Auth')
+        }}
+      ],
+      {cancelable: false}
+    )
   }
 
   pushListItem(){
@@ -143,19 +158,27 @@ export default class HomeScreen extends Component {
           <View style={{backgroundColor: "rgba(0, 0, 0, 0.5)", height: "100%", width: "100%"}} >
             <View style={{marginTop: 40, marginRight: 50,marginLeft: 20, backgroundColor: "#fff", borderRadius: 10,}}>
               <View>
-                <Text style={{flex: 1,fontSize: 25, color: "#cfd8dc", textDecorationLine: "underline", fontWeight: "bold", marginLeft: 10}}>Setting</Text>
-                <TouchableOpacity style={styles.modalList}>
-                  <Icon name="assignment_ind" size={30}/>
-                  <Text style={{textAlign:"left"}}>Edit profile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalList}>
-                  <Icon name="work" size={30}/>
-                  <Text style={{textAlign:"left"}}>Management account</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalList} onPress={()=>{this.setModalVisible(false)}}>
-                  <Icon name="close" size={30}/>
-                  <Text style={{textAlign:"left"}}>Close</Text>
-                </TouchableOpacity>
+                <Text style={{fontSize: 25, color: "#cfd8dc", textDecorationLine: "underline", fontWeight: "bold", marginLeft: 10}}>Setting</Text>
+                
+                <View>
+                  <TouchableOpacity style={styles.modalList}>
+                    <Icon color="#cfd8dc" name="edit" size={30}/>
+                    <Text style={styles.modalListText}>Edit profile</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.modalList}>
+                    <Icon color="#cfd8dc" name="work" size={30}/>
+                    <Text style={styles.modalListText}>Management account</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.modalList} onPress={()=>{this.onSignOut()}}>
+                    <Icon color="#cfd8dc" name="offline-pin" size={30}/>
+                    <Text style={styles.modalListText}>Log out</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.modalList} onPress={()=>{this.setModalVisible(false)}}>
+                    <Icon color="#cfd8dc" name="close" size={30}/>
+                    <Text style={styles.modalListText}>Close</Text>
+                  </TouchableOpacity>
+                </View>
+
               </View>
             </View>
             </View>
@@ -185,7 +208,7 @@ class ListExpense extends Component {
           <Text style={{fontSize:14, textAlign:"center", paddingLeft:5, color: "orange"}}>{this.props.price}{(this.props.price) ? "-.": "0-."}</Text>
         </View>
         <View>
-          <Text style={{fontSize:12,color:"gray"}}>12.00</Text>
+          <Text style={{fontSize:12,color:"gray", textAlign: 'justify'}}>{this.props.time}</Text>
         </View>
       </View>
     )
@@ -254,7 +277,7 @@ const styles = StyleSheet.create(
         marginTop: (Platform.OS === 'ios') ? 30 : 34,
         marginLeft: 10 ,
         backgroundColor: "rgba(120, 139, 145, 0.3)",
-        borderRadius: (50 / 2),
+        borderRadius: 5,
         width: 50,
         height: 50,
         zIndex: 20,
@@ -262,10 +285,16 @@ const styles = StyleSheet.create(
         textAlign: "center"
       },
       modalList: {
-        flex: 1,
         marginLeft: 10,
         height: 50,
-        justifyContent: "space-around",
+        justifyContent: "flex-start",
         flexDirection: "row",
+        alignItems: 'center',
+        alignContent: 'center',
+      },
+      modalListText: {
+        paddingLeft: 10,
+        // backgroundColor: 'gray',        
       }
+
   });
